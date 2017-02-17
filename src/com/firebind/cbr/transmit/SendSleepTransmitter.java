@@ -96,10 +96,16 @@ public class SendSleepTransmitter implements Transmitter {
    * @throws IOException
    */
   protected void setup() throws IOException {
-    datagramsPerCycle = Utils.calculcateDatagramsPerCycle(parameters.getDatagramPayloadSizeBytes(), parameters.getRateBitsPerSecond(), 0.250);
+    datagramsPerCycle = 
+        Utils.calculateDatagramsPerCycle(
+            parameters.getDatagramPayloadSizeBytes(), 
+            parameters.getRateBitsPerSecond(), 0.250);
 
-    int bitsPerCycle = 8 * parameters.getDatagramPayloadSizeBytes() * datagramsPerCycle;
-    nanosPerCycle = (long) (((double) bitsPerCycle) / ((double) parameters.getRateBitsPerSecond()) * 1000000000d);
+    int bitsPerCycle = 8 * parameters.getDatagramPayloadSizeBytes() * 
+        datagramsPerCycle;
+    
+    nanosPerCycle = (long) (((double) bitsPerCycle) / 
+        ((double) parameters.getRateBitsPerSecond()) * 1000000000d);
 
     channel = DatagramChannel.open();
     channel.configureBlocking(false);
@@ -163,11 +169,11 @@ public class SendSleepTransmitter implements Transmitter {
     long transmitterDuration = stopTime - startTime;
     
     double overallRate = 
-        Utils.calculateDataRate(byteCount, transmitterDuration);
+        Utils.calculateRate(byteCount, transmitterDuration);
     
     // accuracy is the observed rate with respect to configured rate (percent)
     double overallAccuracy = 
-        Utils.calculateAccuracy(overallRate, parameters.getRateBitsPerSecond());
+        Utils.calculateAccuracy(overallRate,parameters.getRateBitsPerSecond());
     
     // basic output for results, real results is at the receiver
     System.out.println("Overall rate is " 

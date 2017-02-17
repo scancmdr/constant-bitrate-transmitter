@@ -47,7 +47,8 @@ public class Utils {
   }
   
   
-  static DecimalFormat COMMA_INTEGER_FORMAT = new DecimalFormat("###,###,###,##0");     
+  static DecimalFormat COMMA_INTEGER_FORMAT = 
+      new DecimalFormat("###,###,###,##0");
   /**
    * Not thread safe.
    * 
@@ -67,7 +68,8 @@ public class Utils {
    * @return estimated number datagrams we can fit into a 16K buffer (default
    *         socket buffer size for Linux)
    */
-  public static int estimateDatagramsPerCycleFullBuffer(int datagramPayloadSizeBytes) {
+  public static int estimateDatagramsPerCycleFullBuffer(
+      int datagramPayloadSizeBytes) {
     return 16384 / (datagramPayloadSizeBytes + 8 + 20);
   }
 
@@ -80,10 +82,12 @@ public class Utils {
    * @param maximumPeriod maximum period (cycle time)
    * @return estimated number of datagrams
    */
-  public static int estimateDatagramsPerCycleMaxPeriod(int datagramPayloadSizeBytes, 
-                                                     long rateBitsPerSecond,
-                                                     double maximumPeriod) {
-    return (int) ((((double) rateBitsPerSecond) * maximumPeriod) / (8 * datagramPayloadSizeBytes));
+  public static int estimateDatagramsPerCycleMaxPeriod(
+      int datagramPayloadSizeBytes,
+      long rateBitsPerSecond,
+      double maximumPeriod) {
+    return (int) ((((double) rateBitsPerSecond) * maximumPeriod) / 
+        (8 * datagramPayloadSizeBytes));
   }
 
   /**
@@ -98,7 +102,8 @@ public class Utils {
   public static double calculatePeriod(double datagramsPerCycle, 
                                        double datagramPayloadSizeBytes,
                                        double rateBitsPerSecond) {
-    return (datagramsPerCycle * datagramPayloadSizeBytes * 8) / rateBitsPerSecond;
+    return (datagramsPerCycle * datagramPayloadSizeBytes * 8) 
+        / rateBitsPerSecond;
   }
 
   /**
@@ -112,13 +117,19 @@ public class Utils {
    * @return number of datagrams to send per cycle given payload, rate and 
    * maximum period
    */
-  public static int calculcateDatagramsPerCycle(int datagramPayloadSizeBytes, 
+  public static int calculateDatagramsPerCycle(int datagramPayloadSizeBytes, 
                                              long rateBitsPerSecond, 
                                              double maximumPeriod) {
-    int datagramsPerCycle = estimateDatagramsPerCycleFullBuffer(datagramPayloadSizeBytes);
-    double period = calculatePeriod(datagramsPerCycle, datagramPayloadSizeBytes, rateBitsPerSecond);
+    int datagramsPerCycle = 
+        estimateDatagramsPerCycleFullBuffer(datagramPayloadSizeBytes);
+    double period = calculatePeriod(datagramsPerCycle, 
+                                    datagramPayloadSizeBytes, 
+                                    rateBitsPerSecond);
     if (period > maximumPeriod) {
-      datagramsPerCycle = estimateDatagramsPerCycleMaxPeriod(datagramPayloadSizeBytes, rateBitsPerSecond, maximumPeriod);
+      datagramsPerCycle = 
+          estimateDatagramsPerCycleMaxPeriod(datagramPayloadSizeBytes, 
+                                                             rateBitsPerSecond,
+                                                             maximumPeriod);
     }
     return datagramsPerCycle > 1 ? datagramsPerCycle : 1;
   }
@@ -131,7 +142,7 @@ public class Utils {
    * @param durationNano period of transmission in nanoseconds
    * @return data rate in bits per second
    */
-  public static double calculateDataRate(double byteCount, double durationNano) {
+  public static double calculateRate(double byteCount, double durationNano) {
     return (byteCount * 8) / (durationNano / 1000000000d);
   }
   

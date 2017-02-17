@@ -17,7 +17,6 @@
 package com.firebind.cbr.transmit;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
@@ -64,7 +63,8 @@ public class SendCompareTransmitter implements Transmitter {
   protected ByteBuffer buffer;
 
   /* (non-Javadoc)
-   * @see com.firebind.cbr.transmit.Transmitter#transmit(com.firebind.cbr.transmit.Parameters)
+   * @see 
+   * com.firebind.cbr.transmit.Transmitter#transmit(com.firebind.cbr.transmit.Parameters)
    */
   @Override
   public void transmit(Parameters parameters) throws IOException {
@@ -82,7 +82,9 @@ public class SendCompareTransmitter implements Transmitter {
    * @throws IOException 
    */
   protected void setup() throws IOException {
-    datagramsPerCycle = Utils.calculcateDatagramsPerCycle(parameters.getDatagramPayloadSizeBytes(), parameters.getRateBitsPerSecond(), 0.250);
+    datagramsPerCycle = Utils.calculateDatagramsPerCycle(
+        parameters.getDatagramPayloadSizeBytes(), 
+        parameters.getRateBitsPerSecond(), 0.250);
     channel = DatagramChannel.open();
     channel.configureBlocking(false);
 
@@ -144,11 +146,11 @@ public class SendCompareTransmitter implements Transmitter {
     long transmitterDuration = stopTime - startTime;
     
     double overallRate = 
-        Utils.calculateDataRate(byteCount, transmitterDuration);
+        Utils.calculateRate(byteCount, transmitterDuration);
     
     // accuracy is the observed rate with respect to configured rate (percent)
     double overallAccuracy = 
-        Utils.calculateAccuracy(overallRate, parameters.getRateBitsPerSecond());
+       Utils.calculateAccuracy(overallRate, parameters.getRateBitsPerSecond());
     
     // basic output for results, real results is at the receiver
     System.out.println("Overall rate is " 
