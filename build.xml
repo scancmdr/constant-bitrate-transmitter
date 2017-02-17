@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="jar" name="constant-bitrate-transmitter">
+    
+    <property environment="env"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="dir.project" value="."/>
+    <property name="dir.build.classes" value="./build/classes"/>
+        
+    <path id="constant-bitrate-transmitter.classpath">
+        <pathelement location="bin"/>
+    </path>
+        
+    <target name="init">
+        <mkdir dir="${dir.build.classes}"/>
+    </target>
+        
+    <target name="clean">
+        <delete dir="${dir.build.classes}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" 
+               debuglevel="${debuglevel}" 
+               destdir="${dir.build.classes}" 
+               includeantruntime="false" 
+               source="${source}" 
+               target="${target}">
+            <src path="src"/>
+            <classpath refid="constant-bitrate-transmitter.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${dir.project}/constant-bitrate-transmitter.jar" 
+             filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="com.firebind.cbr.Transmit"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${dir.build.classes}">
+                <include name="**/*.*"/>
+            </fileset>
+        </jar>
+    </target>
+        
+</project>
