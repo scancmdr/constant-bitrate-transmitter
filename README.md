@@ -57,14 +57,13 @@ java -jar constant-bitrate-transmitter.jar <SendCompareTransmitter|SendSleepTran
 
 **Example**
 ```
-java -jar constant-bitrate-transmitter.jar 200 10000 10 127.0.0.1 50001
+java -jar constant-bitrate-transmitter.jar SendCompareTransmitter 200 640000 10 127.0.0.1 50001
 ```
 
 **Output**
 ```
-jay@spock:~$ java -jar constant-bitrate-transmitter.jar 200 10000 10 127.0.0.1 50001
+jay@spock:~$ java -jar constant-bitrate-transmitter.jar SendCompareTransmitter 200 640000 10 127.0.0.1 50001
 Overall rate is 647,577 bps (101.2%) with 71 packets/cycle
 ```
 
-Send any questions or comments to jay@firebind.com
 
