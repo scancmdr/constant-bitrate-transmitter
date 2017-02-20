@@ -18,6 +18,8 @@ package com.firebind.cbr;
 
 import java.io.IOException;
 
+import com.firebind.cbr.sleep.SpinSleepStrategy;
+import com.firebind.cbr.sleep.ThreadSleepStrategy;
 import com.firebind.cbr.transmit.Parameters;
 import com.firebind.cbr.transmit.SendCompareTransmitter;
 import com.firebind.cbr.transmit.SendSleepTransmitter;
@@ -39,9 +41,10 @@ public class Transmit {
    * Usage help text
    */
   final static String USAGE = "Usage: Transmit <SendCompareTransmitter|"
-      +"SendSleepTransmitter|SendSleepDeficitTransmitter> "
+      +"SendSleepTransmitter> "
       +"<datagramPayloadSizeBytes> <rateBitsPerSecondString> "
-      +"<durationSecondsString> <targetAddress> <targetPort>";
+      +"<durationSecondsString> <targetAddress> <targetPort> "
+      +"[ThreadSleepStrategy|SpinSleepStrategy]";
 
   /**
    * @param args
@@ -50,7 +53,7 @@ public class Transmit {
   public static void main(String[] args) throws IOException {
     
     // basic validation, could be much better
-    if (args.length != 6) {
+    if (args.length < 6) {
       System.out.println(USAGE);
       return;
     }
@@ -65,6 +68,12 @@ public class Transmit {
       break;
     case "SendSleepTransmitter":
       transmitter = new SendSleepTransmitter();
+      if (args.length > 6) {
+        ((SendSleepTransmitter)transmitter)
+          .setSleepStrategy(
+              "ThreadSleepStrategy".equals(args[6]) ? 
+                  new ThreadSleepStrategy() : new SpinSleepStrategy());
+      }
       break;
     default:
       // unknown transmitter type

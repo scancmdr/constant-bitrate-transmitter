@@ -152,7 +152,7 @@ public class SendCompareTransmitter implements Transmitter {
     double overallAccuracy = 
        Utils.calculateAccuracy(overallRate, parameters.getRateBitsPerSecond());
     
-    // basic output for results, real results is at the receiver
+    // basic output for results, real result is at the receiver
     System.out.println("Overall rate is " 
         + Utils.commaIntegerFormat(overallRate) + " bps ("
         + Utils.tenths(overallAccuracy)

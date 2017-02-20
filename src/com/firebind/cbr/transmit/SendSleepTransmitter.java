@@ -120,7 +120,9 @@ public class SendSleepTransmitter implements Transmitter {
     buffer = ByteBuffer.allocate(parameters.getDatagramPayloadSizeBytes());
     Utils.fill(buffer); // fill with your favorite payload
     
-    sleepStrategy = new SpinSleepStrategy();
+    if (null == sleepStrategy) {
+      sleepStrategy = new SpinSleepStrategy();
+    }
   }
 
   /**
@@ -175,11 +177,13 @@ public class SendSleepTransmitter implements Transmitter {
     double overallAccuracy = 
         Utils.calculateAccuracy(overallRate,parameters.getRateBitsPerSecond());
     
-    // basic output for results, real results is at the receiver
+    // basic output for results, real result is at the receiver
     System.out.println("Overall rate is " 
         + Utils.commaIntegerFormat(overallRate) + " bps ("
         + Utils.tenths(overallAccuracy)
-        + "%) with " + datagramsPerCycle + " packets/cycle");
+        + "%) with " + datagramsPerCycle + " packets/cycle with "
+        + this.sleepStrategy.getClass().getSimpleName()
+        );
   }
 
   /**
@@ -190,6 +194,10 @@ public class SendSleepTransmitter implements Transmitter {
   protected void teardown() throws IOException {
     buffer.clear();
     channel.close();
+  }
+
+  public void setSleepStrategy(SleepStrategy sleepStrategy) {
+    this.sleepStrategy = sleepStrategy;
   }
 
 }
